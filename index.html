@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+
+    <div id="pokedex">
+        <div class="container">
+            <div id="pokemonName"></div>
+        </div>
+        
+    </div>
+    <div class="btn-container">
+        <button  id="load-more-btn">Load more</button>
+    </div>
+    
+
+    <script>
+        // Lade Pokemon und führe anschließend loadIndividuallyPokemon aus
+        loadPokemon().then(loadIndividuallyPokemon);
+    </script>
+</body>
+</html>
