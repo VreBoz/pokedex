@@ -21,12 +21,35 @@ const pokmnTypesBg = [
   'water/flying'
 ];
 
+let typeColors = {
+  grass: 'rgba(123, 206, 82, 0.8)',       // Grün
+  fire: 'rgba(247, 82, 49, 0.8)',        // Rot
+  water: 'rgba(57, 156, 255, 0.8)',       // Blau
+  electric: 'rgba(255, 198, 49, 0.8)',  // Gelb
+  bug: 'rgba(173, 189, 33, 0.8)',       // Dunkelgelb
+  normal: 'rgba(173, 165, 148, 0.8)',  // Grau
+  flying: 'rgba(156, 173, 247, 0.8)',        // Schwarz
+  poison: 'rgba(181, 90, 165, 0.8)',    // Violett
+  ground: 'rgba(214, 181, 90, 0.8)',    // Braun
+  rock: 'rgba(189, 165, 90, 0.8)',      // Braun
+  fighting: 'rgba(165, 82, 57, 0.8)',    // Dunkelrot
+  psychic: 'rgba(255, 115, 165, 0.8)',   // Pink
+  ghost: 'rgba(99, 99, 181, 0.8)',     // Violett
+  ice: 'rgba(90, 206, 231, 0.8)',       // Hellblau
+  dragon: 'rgba(123, 99, 231, 0.8)',     // Indigo
+  fairy: 'rgba(230, 165, 230, 0.8)',   // Rosa
+  steel: 'rgba(173, 173, 198, 0.8)',   // Silber
+  dark: 'rgba(115, 90, 74, 0.8)'          // Schwarz
+  // Weitere Typen und Farben hier hinzufügen
+};
+
 let pokemonList;                                                    // Variable zur Speicherung der Pokemon-Liste
 let allpkmn;                                                        // Variable zur Speicherung aller Pokemon-Namen
 let allURL;                                                         // Variable zur Speicherung aller Pokemon-URLs
 let pokemonIndex = 0;
 let pokemonImages = [];
 let allTypes = [];
+let allIds = [];
 
 // Funktion zum Laden der Pokemon-Daten
 async function loadPokemon() {
@@ -42,18 +65,29 @@ async function loadPokemon() {
   await renderPokemonInfo();
   bgSwich();                                             // Funktion aufrufen, um die Pokemon-Namen anzuzeigen
   document.getElementById('load-more-btn').addEventListener('click', handleLoadMore);
+  document.getElementById('load-more-btn').style.display = "block";
+}
+
+async function loadPokemonId() {
+  
 }
 
 // Funktion zum Laden der individuellen Pokemon-Daten
 async function loadIndividuallyPokemon() {
   for (let i = 0; i < allURL.length; i++) {
-    let url = allURL[i];                                            // Aktuelle Pokemon-URL auswählen
-    // console.log('URL:', url);                                       // Ausgabe der aktuellen URL
-    let response = await fetch(url);                                // API-Anfrage für das individuelle Pokemon senden und auf die Antwort warten
-    let data = await response.json();                               // JSON-Daten der API-Antwort extrahieren
-    let pokemonImage = data['sprites']['other']['dream_world']['front_default']; // Hier wird das entsprechende Bild für das Pokemon abgerufen
-    pokemonImages.push(pokemonImage);                               // Das Bild wird dem Array hinzugefügt
-    // console.log('API response:', pokemonImage);                     // Ausgabe des Bildes für das individuelle Pokemon
+    let url = allURL[i];  // Aktuelle Pokemon-URL auswählen
+    // console.log('URL:', url);  // Ausgabe der aktuellen URL (auskommentiert)
+
+    let response = await fetch(url);  // API-Anfrage für das individuelle Pokemon senden und auf die Antwort warten
+    let data = await response.json();  // JSON-Daten der API-Antwort extrahieren
+
+    let pokemonImage = data['sprites']['other']['dream_world']['front_default'];  // Hier wird das entsprechende Bild für das Pokemon abgerufen
+    pokemonImages.push(pokemonImage);  // Das Bild wird dem Array hinzugefügt
+
+    let id = String(data['id']).padStart(3, '0');  // Pokemon-ID im gewünschten Format generieren und als String speichern
+    allIds.push(id);  // Pokemon-ID zum Array hinzufügen
+
+    // console.log('all ids:', allIds);  // Ausgabe der IDs (auskommentiert)
   }
 }
 
@@ -84,6 +118,7 @@ function renderPokemonInfo() {
     const capitalized = capitalizeFirstLetter(pkmn['name']);
     const pokemonImage = pokemonImages[i];
     const pokemonTypes = allTypes[i]; // Die entsprechenden Typen für das Pokemon abrufen
+    const pokemonIds = allIds[i];
     bgSwich();
 
     let typesHTML = '';
@@ -93,10 +128,23 @@ function renderPokemonInfo() {
 
     pokemonInfo += `
   <div id="b-g-swich" class="pkmn-name-img" data-type="${pokemonTypes[0]}">
+  
     <h3>${capitalized}</h3>
     <img id="pokemon-icons" src="${pokemonImage}" alt="${capitalized}">
-    <div>
+    <svg width="100px" height="100px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12ZM5.07089 13C5.55612 16.3923 8.47353 19 12 19C15.5265 19 18.4439 16.3923 18.9291 13H14.8293C14.4174 14.1652 13.3062 15 12 15C10.6938 15 9.58251 14.1652 9.17068 13H5.07089ZM18.9291 11C18.4439 7.60771 15.5265 5 12 5C8.47353 5 5.55612 7.60771 5.07089 11H9.17068C9.58251 9.83481 10.6938 9 12 9C13.3062 9 14.4174 9.83481 14.8293 11H18.9291ZM12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" fill="currentColor" />
+</svg>
+   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+   <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+   <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+   <path d="M3 12h6"></path>
+   <path d="M15 12h6"></path>
+</svg>
+    <div class="type-div">
       ${typesHTML}
+    </div>
+    <div>
+      <p class="id-nr">#${pokemonIds}</p>
     </div>
   </div>`;
   }
@@ -107,27 +155,7 @@ function renderPokemonInfo() {
 
 function bgSwich() {
   // Definiere eine Farbtabelle für verschiedene Pokemon-Typen
-  let typeColors = {
-    grass: 'rgba(123, 206, 82, 0.8)',       // Grün
-    fire: 'rgba(247, 82, 49, 0.8)',        // Rot
-    water: 'rgba(57, 156, 255, 0.8)',       // Blau
-    electric: 'rgba(255, 198, 49, 0.8)',  // Gelb
-    bug: 'rgba(173, 189, 33, 0.8)',       // Dunkelgelb
-    normal: 'rgba(173, 165, 148, 0.8)',  // Grau
-    flying: 'rgba(156, 173, 247, 0.8)',        // Schwarz
-    poison: 'rgba(181, 90, 165, 0.8)',    // Violett
-    ground: 'rgba(214, 181, 90, 0.8)',    // Braun
-    rock: 'rgba(189, 165, 90, 0.8)',      // Braun
-    fighting: 'rgba(165, 82, 57, 0.8)',    // Dunkelrot
-    psychic: 'rgba(255, 115, 165, 0.8)',   // Pink
-    ghost: 'rgba(99, 99, 181, 0.8)',     // Violett
-    ice: 'rgba(90, 206, 231, 0.8)',       // Hellblau
-    dragon: 'rgba(123, 99, 231, 0.8)',     // Indigo
-    fairy: 'rgba(230, 165, 230, 0.8)',   // Rosa
-    steel: 'rgba(173, 173, 198, 0.8)',   // Silber
-    dark: 'rgba(115, 90, 74, 0.8)'          // Schwarz
-    // Weitere Typen und Farben hier hinzufügen
-  };
+  
 
   // Alle Elemente mit der Klasse 'pkmn-name-img' auswählen
   let pokemonElements = document.getElementsByClassName('pkmn-name-img');

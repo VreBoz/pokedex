@@ -4,11 +4,21 @@ body {
     background-image: url(./img/himmel.jpg);
     background-attachment: fixed;
     background-size: cover;
+    font-family: 'Kanit', sans-serif;
+}
+h3 {
+    font-weight: 500;
 }
 
 #load-more-btn {
-    width: 200px;
-    height: 40px;
+    width: 230px;
+    height: 48px;
+    color: white;
+    background: red;
+    border-color: transparent;
+    margin: 20px 0px 60px 0px;
+    font-size: 20px;
+    display: none;
 }
 
 #pokedex {
@@ -41,11 +51,15 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
 }
 
 #pokemon-icons {
     max-width: 130px;
+    min-height: 100px;
     max-height: 100px;
+    margin-bottom: 12px;
+    z-index: 1;
 }
 
 .btn-container {
@@ -54,12 +68,34 @@ body {
 }
 
 .pkmn-type {
-    width: 40px;
-    border: 1px solid black;
+    
+    border: 1px solid transparent;
     padding-left: 15px;
     padding-right: 15px;
     padding-top: 2px;
     padding-bottom: 2px;
     font-size: 14px;
     border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    
+}
+
+.type-div {
+    height: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.id-nr {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+svg {
+    position: absolute;
+    width: 100px;
+    right: -11px;
+    z-index: auto;
+    top: 37px;
+    color: rgba(255, 255, 255, 0.2)
 }
